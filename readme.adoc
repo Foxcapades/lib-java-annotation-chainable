@@ -1,0 +1,14 @@
+= Chainable Annotation
+
+image:https://img.shields.io/badge/Java-8-ff69b4[]
+image:https://img.shields.io/badge/license-MIT-brightgreen[]
+image:https://img.shields.io/badge/docs-javadoc-blue[link="https://foxcapades.github.io/lib-java-annotation-chainable/javadoc/"]
+image:https://img.shields.io/badge/docs-kdoc-darkgreen[link="https://foxcapades.github.io/lib-java-annotation-chainable/dokka/"]
+image:https://img.shields.io/maven-central/v/io.foxcapades.lib.annotations/chainable-annotation[link="https://search.maven.org/search?q=g:io.foxcapades.lib.annotations%20a:chainable-annotation"]
+
+A microscopic library that provides the documentation annotation `@Chainable`
+that may be applied to class methods to indicate that the annotated method
+returns the instance of the parent type that the method was called from.
+
+This is intended to be used as documentation shorthand for builder pattern
+methods.

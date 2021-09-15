@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:io.foxcapades.lib.annotations.chainable////PointingToDeclaration/chainable-annotation/io.foxcapades.lib.annotations.chainable/index.html
+$dokka.location:io.foxcapades.lib.annotations.chainable/Chainable///PointingToDeclaration/chainable-annotation/io.foxcapades.lib.annotations.chainable/-chainable/index.html
+$dokka.location:io.foxcapades.lib.annotations.chainable/Chainable/Chainable/#/PointingToDeclaration/chainable-annotation/io.foxcapades.lib.annotations.chainable/-chainable/-chainable.html
+io.foxcapades.lib.annotations.chainable
+
