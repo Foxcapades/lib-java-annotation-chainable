@@ -1,3 +1,10 @@
+define envCheck
+	if [ -z "${$(1)}" ]; then \
+		echo "Missing required environment variable $(2)" 1>&2; \
+		exit 1; \
+	fi
+endef
+
 .PHONY: nothing
 nothing:
 	# Do nothing
@@ -33,18 +40,9 @@ verify-github-env:
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	@if [ -z "${NEXUS_USER}" ]; then \
-		echo "Missing required environment variable NEXUS_USER" 1>&2; \
-		exit 1; \
-	fi
-	@if [ -z "${NEXUS_PASS}" ]; then \
-		echo "Missing required environment variable NEXUS_PASS" 1>&2; \
-		exit 1; \
-	fi
-	@if [ -z "${GPG_KEY}" ]; then \
-		echo "Missing required environment variable GPG_KEY" 1>&2; \
-		exit 1; \
-	fi
+	$(call envCheck, NEXUS_USER)
+	$(call envCheck, NEXUS_PASS)
+	$(call envCheck, GPG_KEY)
 
 .PHONY: patch-version
 patch-version:
