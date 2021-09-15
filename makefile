@@ -1,6 +1,6 @@
 define envCheck
-	if [ -z "${$(1)}" ]; then \
-		echo "Missing required environment variable $(2)" 1>&2; \
+	@if [ -z "$${$(1)}" ]; then \
+		echo "Missing required environment variable $(1)" 1>&2; \
 		exit 1; \
 	fi
 endef
@@ -40,9 +40,9 @@ verify-github-env:
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	$(call envCheck, "NEXUS_USER")
-	$(call envCheck, "NEXUS_PASS")
-	$(call envCheck, "GPG_KEY")
+	$(call envCheck,NEXUS_USER)
+	$(call envCheck,NEXUS_PASS)
+	$(call envCheck,GPG_KEY)
 
 .PHONY: patch-version
 patch-version:
