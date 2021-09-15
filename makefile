@@ -1,12 +1,12 @@
 define envCheck
-	@if [ -z "$${$(1)}" ]; then \
-		echo "Missing required environment variable $(1)" 1>&2; \
-		exit 1; \
-	fi
+@if [ -z "$${$(1)}" ]; then \
+	echo "Missing required environment variable $(1)" 1>&2; \
+	exit 1; \
+fi
 endef
 
 define gitTag
-	@echo ${GITHUB_REF} | cut -d/ -f3 | sed -e "s#v##"
+$(shell echo "${GITHUB_REF}" | cut -d/ -f3 | sed -e "s#v##")
 endef
 
 .PHONY: nothing
@@ -57,4 +57,4 @@ patch-version: verify-github-env
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	@sed -i -e "s/version \+=.\+/version = \"$(call gitTag)\"/" build.gradle.kts
+	@sed -i "s#version \+=.\+#version = \"$(call gitTag)\"#" build.gradle.kts
