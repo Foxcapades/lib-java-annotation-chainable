@@ -5,6 +5,10 @@ define envCheck
 	fi
 endef
 
+define gitTag
+	@echo ${GITHUB_REF} | cut -d/ -f3 | sed -e "s#v##"
+endef
+
 .PHONY: nothing
 nothing:
 	# Do nothing
@@ -21,7 +25,7 @@ github-release: verify-github-env patch-version prep-github-gpg
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	./gradlew \
+	@./gradlew \
 		-Pnexus.user=${NEXUS_USER} \
 		-Pnexus.pass=${NEXUS_PASS} \
 		-Psigning.gnupg.executable=gpg \
@@ -29,7 +33,7 @@ github-release: verify-github-env patch-version prep-github-gpg
 		publish
 
 .PHONY: prep-github-gpg
-prep-github-gpg:
+prep-github-gpg: verify-github-env
 	@cat <(echo -e "${GPG_KEY}") | gpg --batch --import
 
 .PHONY: verify-github-env
@@ -46,11 +50,11 @@ verify-github-env:
 	$(call envCheck,GITHUB_REF)
 
 .PHONY: patch-version
-patch-version:
+patch-version: verify-github-env
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo "#"
 	@echo "# Patching build version"
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	sed -i "s/version \+=.\+/version = \"$(shell echo "${GITHUB_REF}" | sed 's#v##')\"/" build.gradle.kts
+	@sed -i -e "s/version \+=.\+/version = \"$(call gitTag)\"/" build.gradle.kts
