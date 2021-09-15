@@ -25,7 +25,7 @@ github-release: verify-github-env patch-version prep-github-gpg
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	./gradlew \
+	@./gradlew \
 		-Pnexus.user="${NEXUS_USER}" \
 		-Pnexus.pass="${NEXUS_PASS}" \
 		-Psigning.gnupg.executable=gpg \
