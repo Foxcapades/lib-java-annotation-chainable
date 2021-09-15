@@ -21,11 +21,11 @@ github-release: verify-github-env patch-version prep-github-gpg
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	@./gradlew \
+	./gradlew \
 		-Pnexus.user=${NEXUS_USER} \
 		-Pnexus.pass=${NEXUS_PASS} \
 		-Psigning.gnupg.executable=gpg \
-		-Psigning.gnupg.keyName=$(shell gpg --list-secret-keys --keyid-format LONG | grep sec | sed 's#sec \+.\+/\([^ ]\+\).\+#\1#') \
+		-Psigning.gnupg.keyName=$(shell gpg --list-secret-keys --keyid-format LONG | grep sec | sed -e 's#sec \+.\+/\([^ ]\+\).\+#\1#') \
 		publish
 
 .PHONY: prep-github-gpg
@@ -43,6 +43,7 @@ verify-github-env:
 	$(call envCheck,NEXUS_USER)
 	$(call envCheck,NEXUS_PASS)
 	$(call envCheck,GPG_KEY)
+	$(call envCheck,GITHUB_REF)
 
 .PHONY: patch-version
 patch-version:
@@ -52,4 +53,4 @@ patch-version:
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	@sed "s/version \+=.\+/version = \"$(shell echo "${GITHUB_REF}" | sed 's/v//')\"/" build.gradle.kts
+	sed -i "s/version \+=.\+/version = \"$(shell echo "${GITHUB_REF}" | sed 's#v##')\"/" build.gradle.kts
