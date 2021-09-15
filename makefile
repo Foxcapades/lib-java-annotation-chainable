@@ -34,7 +34,7 @@ github-release: verify-github-env patch-version prep-github-gpg
 
 .PHONY: prep-github-gpg
 prep-github-gpg: verify-github-env
-	@cat <(echo -e "${GPG_KEY}") | gpg --batch --import
+	$(shell cat <(echo -e "${GPG_KEY}") | gpg --batch --import)
 
 .PHONY: verify-github-env
 verify-github-env:
