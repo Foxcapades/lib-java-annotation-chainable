@@ -40,9 +40,9 @@ verify-github-env:
 	@echo "#"
 	@echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
 	@echo
-	$(call envCheck, NEXUS_USER)
-	$(call envCheck, NEXUS_PASS)
-	$(call envCheck, GPG_KEY)
+	$(call envCheck, "NEXUS_USER")
+	$(call envCheck, "NEXUS_PASS")
+	$(call envCheck, "GPG_KEY")
 
 .PHONY: patch-version
 patch-version:
