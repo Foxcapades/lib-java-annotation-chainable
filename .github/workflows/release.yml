@@ -16,6 +16,9 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
 
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
       - name: Publish
         run: make github-release
         env:
