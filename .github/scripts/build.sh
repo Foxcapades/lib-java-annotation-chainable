@@ -49,6 +49,25 @@ function prepGitHubGPG() {
   gpg --batch --import <(echo -e "${GPG_KEY}")
 }
 
+function makeProperties() {
+  echo "nexus.user=${NEXUS_USER}"     >  gradle.properties
+  echo "nexus.pass=${NEXUS_PASS}"     >> gradle.properties
+  echo "signing.gnupg.executable=gpg" >> gradle.properties
+
+  keyID=$(gpg --list-secret-keys --keyid-format LONG | grep sec | sed -e 's#sec \+.\+/\([^ ]\+\).\+#\1#')
+
+  if [[ ! "${keyID}" ]]; then
+    echo "Missing required GPG key ID" 1>&2
+    exit 1
+  fi
+
+  echo "signing.gnupg.keyName=${keyID:?}" >> gradle.properties
+}
+
+function cleanup() {
+  rm gradle.properties
+}
+
 function gitHubRelease() {
   echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
   echo "#"
@@ -56,12 +75,7 @@ function gitHubRelease() {
   echo "#"
   echo "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
   echo
-  ./gradlew \
-    -Pnexus.user="${NEXUS_USER}" \
-    -Pnexus.pass="${NEXUS_PASS}" \
-    -Psigning.gnupg.executable=gpg \
-    -Psigning.gnupg.keyName="$(gpg --list-secret-keys --keyid-format LONG | grep sec | sed -e 's#sec \+.\+/\([^ ]\+\).\+#\1#')" \
-    publish
+  ./gradlew publish
 }
 
 function docs() {
@@ -73,7 +87,9 @@ case $1 in
     verifyGitHubEnv
     patchVersion
     prepGitHubGPG
+    makeProperties
     gitHubRelease
+    cleanup
     ;;
   "doc")
     doc
