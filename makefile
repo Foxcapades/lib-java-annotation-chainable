@@ -4,8 +4,9 @@ nothing:
 
 .PHONY: docs
 docs:
-	@bash .github/scripts/bash.sh doc
+	@.github/scripts/build.sh doc
 
 .PHONY: github-release
 github-release:
-	@bash .github/scripts/bash.sh github-release
+	@.github/scripts/build.sh github-release
+
